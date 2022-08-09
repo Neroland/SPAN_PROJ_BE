@@ -6,6 +6,12 @@ from ast import literal_eval
 
 import os.path
 
+# Fetch the service account key JSON file contents
+cred = credentials.Certificate('span-backend-project-1-fce35fc4c9b3.json')
+# Initialize the app with a service account, granting admin privileges
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://span-backend-project-1-default-rtdb.europe-west1.firebasedatabase.app/'
+})
 
 #split the team data into "Team Name" and "Team Score"
 def team_split(s):
@@ -14,13 +20,6 @@ def team_split(s):
     return head, tail
 
 def update_data_from_db(reference_name):
-    # Fetch the service account key JSON file contents
-    cred = credentials.Certificate('span-backend-project-1-fce35fc4c9b3.json')
-    # Initialize the app with a service account, granting admin privileges
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://span-backend-project-1-default-rtdb.europe-west1.firebasedatabase.app/'
-    })
-
     # As an admin, the app has access to read and write all data, regradless of Security Rules
     ref_data = db.reference(reference_name)
     return ref_data
@@ -44,7 +43,7 @@ def start(run_me):
         # Menu 1 is for the Adding of Results
         if(menu=='1'):
             # Get file location of scores
-            results = input("Please input file location:\n\n")
+            results = input("Please input file location:\n")
 
             # Checks if it can access the file
             if(os.path.exists(results)):
